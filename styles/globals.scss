@@ -1,0 +1,54 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: #070b34;
+  }
+}
+
+@keyframes planetrotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.body-orbit {
+  path {
+    transition: stroke-width 0.25s ease-in-out, opacity 0.25s ease-in-out;
+  }
+  ellipse {
+    transition: rx 0.25s ease-in-out, ry 0.25s ease-in-out;
+  }
+  &:hover {
+    path {
+      stroke-width: 12;
+      opacity: 1 !important;
+    }
+    ellipse {
+      rx: 18;
+      ry: 18;
+    }
+  }
+}

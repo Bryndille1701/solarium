@@ -1,0 +1,7 @@
+- Routes
+- exportPathMap
+- Modal
+- Canvas
+- Affichage des orbites
+- Icônes des planètes
+- Lunes ?

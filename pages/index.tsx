@@ -1,10 +1,29 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
+import { getPlanets } from 'api/solar';
+import Canvas from 'components/Canvas';
+import ModalPage from 'components/ModalPage';
+import type { GetStaticProps, NextPage } from 'next';
+import type { Body } from 'types/bodies';
 
-const Home: NextPage = () => {
-  return <div>Hello world</div>;
+interface HomeProps {
+  bodies: Body[];
+}
+
+const Home: NextPage<HomeProps> = ({ bodies }) => {
+  return (
+    <div>
+      <Canvas bodies={bodies} isRoot={true} />
+      <ModalPage bodies={bodies} />
+    </div>
+  );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const res = await getPlanets();
+  return {
+    props: {
+      bodies: res,
+    },
+  };
 };
 
 export default Home;
