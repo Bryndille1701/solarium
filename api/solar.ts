@@ -11,9 +11,6 @@ export const getPlanets = async () => {
       const moons = await getMoons(body);
       // @ts-ignore
       const color = planetColors[body.id];
-      console.log(body.id);
-      console.log(color);
-
       return {
         ...body,
         moons,

@@ -63,6 +63,7 @@ const Canvas = ({ bodies, isRoot = true }: CanvasProps) => {
           const color = rgbToHex(tempToColor(temp));
           return (
             <circle
+              key={idx}
               r={Math.random() * 3 + 1}
               cx={cxStar}
               cy={cyStar}
@@ -87,46 +88,45 @@ const Canvas = ({ bodies, isRoot = true }: CanvasProps) => {
           const cy = heightDiv / 2;
           const path = getD(cx, cy, rx, ry);
           return (
-            <a href="https://google.com" target="_blank">
+            <g
+              key={body.id}
+              style={{
+                transform: `rotateX(${angleDeg}deg)`,
+                transformOrigin: 'center',
+              }}
+            >
               <g
                 style={{
-                  transform: `rotateX(${angleDeg}deg)`,
+                  animation: 'planetrotation',
                   transformOrigin: 'center',
+                  animationDuration: `${body.sideralOrbit / 35}s`,
+                  animationTimingFunction: 'linear',
+                  animationIterationCount: 'infinite',
                 }}
+                className="body-orbit"
+                key={body.id}
               >
-                <g
-                  style={{
-                    animation: 'planetrotation',
-                    transformOrigin: 'center',
-                    animationDuration: `${body.sideralOrbit / 35}s`,
-                    animationTimingFunction: 'linear',
-                    animationIterationCount: 'infinite',
-                  }}
-                  className="body-orbit"
+                <path
                   key={body.id}
-                >
-                  <path
-                    key={body.id}
-                    data-body={body.id}
-                    stroke={body.color ?? 'white'}
-                    strokeWidth={7}
-                    style={{ opacity: 0.7 }}
-                    fill="none"
-                    id={`ORBIT-${body.id}`}
-                    d={path}
-                  />
-                  <ellipse
-                    fill={body.color ?? 'white'}
-                    width="60"
-                    height="60"
-                    cx={cx - rx}
-                    cy={cy}
-                    rx={12}
-                    ry={12}
-                  ></ellipse>
-                </g>
+                  data-body={body.id}
+                  stroke={body.color ?? 'white'}
+                  strokeWidth={7}
+                  style={{ opacity: 0.7 }}
+                  fill="none"
+                  id={`ORBIT-${body.id}`}
+                  d={path}
+                />
+                <ellipse
+                  fill={body.color ?? 'white'}
+                  width="60"
+                  height="60"
+                  cx={cx - rx}
+                  cy={cy}
+                  rx={12}
+                  ry={12}
+                ></ellipse>
               </g>
-            </a>
+            </g>
           );
         })}
       </svg>
