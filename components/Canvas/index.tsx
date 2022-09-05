@@ -3,6 +3,8 @@ import useResizeObserver from 'use-resize-observer';
 import type { Body } from 'types/bodies';
 import { majorToMinor, getD } from 'utils/orbit';
 import { tempToColor, rgbToHex } from 'styles/colors';
+import Planet from '../Planet';
+import Star from 'components/Star';
 
 interface CanvasProps {
   bodies: Body[];
@@ -10,8 +12,13 @@ interface CanvasProps {
 }
 
 const Canvas = ({ bodies, isRoot = true }: CanvasProps) => {
-  const { ref: canvasRef, width = 1 } = useResizeObserver<HTMLDivElement>();
+  const {
+    ref: canvasRef,
+    width = 1,
+    height = 1,
+  } = useResizeObserver<HTMLDivElement>();
   const [orbitRatio, setOrbitRatio] = useState(1);
+  const [biggestBody, setBiggestBody] = useState<Body>();
   const [realValueWeight, setRealValueWeight] = useState(1);
   const [meanValueWeight, setMeanValueWeight] = useState(1);
   // Angle de perspective, en degrés
@@ -30,8 +37,9 @@ const Canvas = ({ bodies, isRoot = true }: CanvasProps) => {
     return sorted;
   }, [bodies]);
   useEffect(() => {
-    const biggestBody = orderedBodies[0];
-    const ratio = biggestBody.semimajorAxis / (width * 0.9);
+    const biggest = orderedBodies[0];
+    setBiggestBody(biggest);
+    const ratio = biggest.semimajorAxis / (width * 0.9);
     setOrbitRatio(ratio);
   }, [orderedBodies, width]);
 
@@ -47,7 +55,7 @@ const Canvas = ({ bodies, isRoot = true }: CanvasProps) => {
   return (
     <div
       ref={canvasRef}
-      style={{ width: '100%', height: heightDiv }}
+      style={{ width: '100%', height: '100vh', position: 'relative' }}
       className="canvas-root"
     >
       <svg
@@ -55,78 +63,38 @@ const Canvas = ({ bodies, isRoot = true }: CanvasProps) => {
         xmlnsXlink="http://www.w3.org/1999/xlink"
         width="100%"
         height="100%"
+        style={{ position: 'absolute' }}
       >
-        {Array.from(new Array(30)).map((star, idx) => {
-          const cxStar = Math.random() * width;
-          const cyStar = Math.random() * heightDiv;
-          const temp = Number((Math.random() * 39000 + 1000).toFixed(0));
-          const color = rgbToHex(tempToColor(temp));
-          return (
-            <circle
-              key={idx}
-              r={Math.random() * 3 + 1}
-              cx={cxStar}
-              cy={cyStar}
-              data-temp={temp}
-              fill={color}
-              style={{ opacity: (Math.random() + 0.1) * 0.8 }}
-            />
-          );
-        })}
+        {Array.from(new Array(50)).map((_, idx) => (
+          <Star key={idx} idx={idx} canvasWidth={width} canvasHeight={height} />
+        ))}
+      </svg>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        width="100%"
+        height={heightDiv}
+        style={{
+          position: 'absolute',
+          top: '50%',
+          transform: 'translateY(-50%)',
+        }}
+      >
         {orderedBodies.map((body, idx) => {
-          const length = orderedBodies.length;
-          const biggest = orderedBodies[0].semimajorAxis;
-          const meanSemiMajorAxis = biggest * ((length - idx) / length);
-          const semimajorAxis =
-            (body.semimajorAxis * realValueWeight +
-              meanSemiMajorAxis * meanValueWeight) /
-            2;
-          const rx = semimajorAxis / orbitRatio / 2;
-          const ry =
-            majorToMinor(semimajorAxis, body.eccentricity) / orbitRatio / 2;
-          const cx = width / 2;
-          const cy = heightDiv / 2;
-          const path = getD(cx, cy, rx, ry);
           return (
-            <g
+            <Planet
               key={body.id}
-              style={{
-                transform: `rotateX(${angleDeg}deg)`,
-                transformOrigin: 'center',
-              }}
-            >
-              <g
-                style={{
-                  animation: 'planetrotation',
-                  transformOrigin: 'center',
-                  animationDuration: `${body.sideralOrbit / 35}s`,
-                  animationTimingFunction: 'linear',
-                  animationIterationCount: 'infinite',
-                }}
-                className="body-orbit"
-                key={body.id}
-              >
-                <path
-                  key={body.id}
-                  data-body={body.id}
-                  stroke={body.color ?? 'white'}
-                  strokeWidth={7}
-                  style={{ opacity: 0.7 }}
-                  fill="none"
-                  id={`ORBIT-${body.id}`}
-                  d={path}
-                />
-                <ellipse
-                  fill={body.color ?? 'white'}
-                  width="60"
-                  height="60"
-                  cx={cx - rx}
-                  cy={cy}
-                  rx={12}
-                  ry={12}
-                ></ellipse>
-              </g>
-            </g>
+              body={body}
+              planetNb={orderedBodies.length}
+              idx={idx}
+              biggest={biggestBody}
+              realValueWeight={realValueWeight}
+              meanValueWeight={meanValueWeight}
+              orbitRatio={orbitRatio}
+              canvasWidth={width}
+              canvasHeight={heightDiv}
+              angle={angleDeg}
+            />
           );
         })}
       </svg>
