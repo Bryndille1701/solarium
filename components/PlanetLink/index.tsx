@@ -1,6 +1,7 @@
 import Link, { LinkProps } from 'next/link';
-import type { Body } from 'types/bodies';
-import { getD, majorToMinor } from 'utils/orbit';
+// @ts-ignore
+import type { Body } from '@types/bodies';
+import { getD, majorToMinor } from '@utils/orbit';
 
 interface PlanetProps extends LinkProps {
   body: Body;

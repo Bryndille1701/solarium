@@ -1,11 +1,11 @@
-import { getBody, getPlanets } from 'api/solar';
-import Canvas from 'components/Canvas';
+import { getBody, getPlanets } from '@api/solar';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { Body } from 'types/bodies';
+// @ts-ignore
+import { Body } from '@types/bodies';
 
 type BodyPageProps = {
   body: Body;

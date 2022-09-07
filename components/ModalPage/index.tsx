@@ -11,8 +11,6 @@ type ModalPageProps = {
   destinataires?: any;
 };
 
-Modal.setAppElement('#__next');
-
 // Composant d'affichage de la modale et du contenu de page
 const ModalPage = ({ bodies, title }: ModalPageProps) => {
   const router = useRouter();

@@ -1,5 +1,6 @@
-import type { BodyRes, Body } from 'types/bodies';
-import { planetColors } from 'styles/colors';
+// @ts-ignore
+import type { BodyRes, Body } from '@types/bodies';
+import { planetColors } from '@styles/colors';
 
 export const getPlanets = async () => {
   const res = await fetch(

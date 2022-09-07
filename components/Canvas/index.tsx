@@ -1,10 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import useResizeObserver from 'use-resize-observer';
-import type { Body } from 'types/bodies';
-import { majorToMinor, getD } from 'utils/orbit';
-import { tempToColor, rgbToHex } from 'styles/colors';
-import PlanetLink from '../PlanetLink';
-import Star from 'components/Star';
+// @ts-ignore
+import type { Body } from '@types/bodies';
+import PlanetLink from '@components/PlanetLink';
+import Star from '@components/Star';
 
 interface CanvasProps {
   bodies: Body[];
@@ -70,7 +69,6 @@ const Canvas = ({ bodies, isRoot = true }: CanvasProps) => {
         ))}
       </svg>
       {orderedBodies.map((body, idx) => {
-        console.log(`/?body=${body.id}`);
         return (
           <PlanetLink
             body={body}

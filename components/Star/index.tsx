@@ -1,4 +1,4 @@
-import { rgbToHex, tempToColor } from 'styles/colors';
+import { rgbToHex, tempToColor } from '@styles/colors';
 
 type StarProps = {
   idx: number;
