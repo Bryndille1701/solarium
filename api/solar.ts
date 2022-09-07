@@ -1,5 +1,6 @@
 import type { BodyRes, Body } from 'types/bodies';
 import { planetColors } from 'styles/colors';
+
 export const getPlanets = async () => {
   const res = await fetch(
     `${process.env.API_BASE_URL}/bodies/?filter[]=isPlanet,eq,true`
@@ -19,6 +20,19 @@ export const getPlanets = async () => {
     })
   );
   return bodiesWithMoons;
+};
+
+export const getBody = async (bodyId: string) => {
+  const res = await fetch(`${process.env.API_BASE_URL}/bodies/${bodyId}`);
+  const body: BodyRes = await res.json();
+  const moons = await getMoons(body);
+  // @ts-ignore
+  const color = planetColors[body.id];
+  return {
+    ...body,
+    moons,
+    color,
+  };
 };
 export const getMoons = async (body: BodyRes) => {
   const moonsRel = body.moons;

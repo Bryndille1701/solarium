@@ -3,7 +3,7 @@ import useResizeObserver from 'use-resize-observer';
 import type { Body } from 'types/bodies';
 import { majorToMinor, getD } from 'utils/orbit';
 import { tempToColor, rgbToHex } from 'styles/colors';
-import Planet from '../Planet';
+import PlanetLink from '../PlanetLink';
 import Star from 'components/Star';
 
 interface CanvasProps {
@@ -69,35 +69,25 @@ const Canvas = ({ bodies, isRoot = true }: CanvasProps) => {
           <Star key={idx} idx={idx} canvasWidth={width} canvasHeight={height} />
         ))}
       </svg>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        width="100%"
-        height={heightDiv}
-        style={{
-          position: 'absolute',
-          top: '50%',
-          transform: 'translateY(-50%)',
-        }}
-      >
-        {orderedBodies.map((body, idx) => {
-          return (
-            <Planet
-              key={body.id}
-              body={body}
-              planetNb={orderedBodies.length}
-              idx={idx}
-              biggest={biggestBody}
-              realValueWeight={realValueWeight}
-              meanValueWeight={meanValueWeight}
-              orbitRatio={orbitRatio}
-              canvasWidth={width}
-              canvasHeight={heightDiv}
-              angle={angleDeg}
-            />
-          );
-        })}
-      </svg>
+      {orderedBodies.map((body, idx) => {
+        console.log(`/?body=${body.id}`);
+        return (
+          <PlanetLink
+            body={body}
+            planetNb={orderedBodies.length}
+            idx={idx}
+            biggest={biggestBody}
+            realValueWeight={realValueWeight}
+            meanValueWeight={meanValueWeight}
+            orbitRatio={orbitRatio}
+            canvasWidth={width}
+            canvasHeight={heightDiv}
+            angle={angleDeg}
+            href={{ pathname: '/', query: { body: body.id } }}
+            as={`/${body.id}`}
+          />
+        );
+      })}
     </div>
   );
 };

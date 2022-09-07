@@ -1,7 +1,8 @@
 import { getPlanets } from 'api/solar';
 import Canvas from 'components/Canvas';
+import Link from 'components/Link';
 import ModalPage from 'components/ModalPage';
-import type { GetStaticProps, NextPage } from 'next';
+import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import type { Body } from 'types/bodies';
 
 interface HomeProps {
