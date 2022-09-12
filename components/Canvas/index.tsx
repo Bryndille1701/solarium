@@ -71,6 +71,7 @@ const Canvas = ({ bodies, isRoot = true }: CanvasProps) => {
       {orderedBodies.map((body, idx) => {
         return (
           <PlanetLink
+            key={body.id}
             body={body}
             planetNb={orderedBodies.length}
             idx={idx}
